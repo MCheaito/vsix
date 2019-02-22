@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28307.421
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XmlToResx", "XmlToResx\XmlToResx.csproj", "{07333870-B250-4C15-91D2-1DFE31F12972}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VSIXProject1", "VSIXProject1\VSIXProject1.csproj", "{13649BBE-6B95-4E4C-A92D-CA612CC8B59A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{07333870-B250-4C15-91D2-1DFE31F12972}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{07333870-B250-4C15-91D2-1DFE31F12972}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{07333870-B250-4C15-91D2-1DFE31F12972}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13649BBE-6B95-4E4C-A92D-CA612CC8B59A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13649BBE-6B95-4E4C-A92D-CA612CC8B59A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13649BBE-6B95-4E4C-A92D-CA612CC8B59A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13649BBE-6B95-4E4C-A92D-CA612CC8B59A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
