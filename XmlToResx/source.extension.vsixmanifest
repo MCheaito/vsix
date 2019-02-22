@@ -5,6 +5,7 @@
         <DisplayName>XmlToResx</DisplayName>
         <Description xml:space="preserve">Allows to create .resx file of different culture from .xml fileAllow to 
         </Description>
+        <License>Resources\LICENSE</License>
         <Icon>Resources\icon.png</Icon>
         <PreviewImage>Resources\preview.png</PreviewImage>
         <Tags>resx,xml,culture,localization,globalization</Tags>
