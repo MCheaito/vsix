@@ -7,6 +7,7 @@ using System.Linq;
 using System.Resources;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Xml.Linq;
 using EnvDTE;
 using EnvDTE80;
@@ -98,18 +99,26 @@ namespace XmlToResx
         /// </summary>
         /// <param name="sender">Event sender.</param>
         /// <param name="e">Event args.</param>
-        private async void Execute(object sender, EventArgs e)
+        private  void Execute(object sender, EventArgs e)
         {
-            await MenuItemCallbackAsync();
+             MenuItemCallbackAsync();
 
         }
 
-        private async Task MenuItemCallbackAsync()
+        private async void MenuItemCallbackAsync()
         {
             var dte = (DTE2)await ServiceProvider.GetServiceAsync(typeof(DTE));
             string xmlfile;
-            if (CanCreateResx(dte, out  xmlfile))
+            if (CanCreateResx(dte, out xmlfile))
             {
+                //if (
+                //MessageBox.Show(@"This will add some .resx files into project's properties\n
+                //                  Files that already exist will be overriden\n
+                //                  Do you wish to continue ", "Confirm", MessageBoxButtons.YesNo) == DialogResult.No)
+                //{
+                //    return;
+                //}
+
                 var destPath = $@"{Path.GetDirectoryName(xmlfile)}\Properties";
 
                 GenerateResxFile(xmlfile, destPath, null);
@@ -124,6 +133,10 @@ namespace XmlToResx
                 GenerateResxFile(xmlfile, destPath, "ar-LB");
                 Console.WriteLine($"Resources file for 'ar-LB' is done!!");
             }
+            // else
+            //{
+            //    MessageBox.Show("Please select an xml file");
+            //}
 
         }
 
@@ -156,7 +169,7 @@ namespace XmlToResx
 
         public static IEnumerable<string> GetSelectedFiles(DTE2 dte)
         {
-            ThreadHelper.ThrowIfNotOnUIThread();
+            //ThreadHelper.ThrowIfNotOnUIThread();
             var items = (Array)dte.ToolWindows.SolutionExplorer.SelectedItems;
 
             return from item in items.Cast<UIHierarchyItem>()
