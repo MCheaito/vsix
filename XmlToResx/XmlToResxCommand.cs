@@ -35,6 +35,7 @@ namespace XmlToResx
         /// VS Package that provides this command, not null.
         /// </summary>
         private readonly AsyncPackage package;
+        private readonly OleMenuCommandService commandService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="XmlToResxCommand"/> class.
@@ -44,8 +45,12 @@ namespace XmlToResx
         /// <param name="commandService">Command service to add command to, not null.</param>
         private XmlToResxCommand(AsyncPackage package, OleMenuCommandService commandService)
         {
-            this.package = package ?? throw new ArgumentNullException(nameof(package));
-            commandService = commandService ?? throw new ArgumentNullException(nameof(commandService));
+            if ( (package == null)|| (commandService== null))
+            {
+                throw new ArgumentNullException("package or commandService");
+            }
+            this.package = package;
+            this.commandService = commandService;
 
             var menuCommandID = new CommandID(CommandSet, CommandId);
             var menuItem = new MenuCommand(this.Execute, menuCommandID);
@@ -93,17 +98,17 @@ namespace XmlToResx
         /// </summary>
         /// <param name="sender">Event sender.</param>
         /// <param name="e">Event args.</param>
-        private void Execute(object sender, EventArgs e)
+        private async void Execute(object sender, EventArgs e)
         {
-            MenuItemCallbackAsync();
+            await MenuItemCallbackAsync();
 
         }
 
-        private async void MenuItemCallbackAsync()
+        private async Task MenuItemCallbackAsync()
         {
             var dte = (DTE2)await ServiceProvider.GetServiceAsync(typeof(DTE));
-
-            if (CanCreateResx(dte, out string xmlfile))
+            string xmlfile;
+            if (CanCreateResx(dte, out  xmlfile))
             {
                 var destPath = $@"{Path.GetDirectoryName(xmlfile)}\Properties";
 
@@ -151,6 +156,7 @@ namespace XmlToResx
 
         public static IEnumerable<string> GetSelectedFiles(DTE2 dte)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             var items = (Array)dte.ToolWindows.SolutionExplorer.SelectedItems;
 
             return from item in items.Cast<UIHierarchyItem>()
