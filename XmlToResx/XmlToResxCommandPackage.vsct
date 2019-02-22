@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <Extern href="stdidcmd.h"/>
+  <Extern href="vsshlids.h"/>
+  <Commands package="guidXmlToResxCommandPackage">
+    <Groups>
+      <Group guid="guidXmlToResxCommandPackageCmdSet" id="MyMenuGroup" priority="0x0600">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_ITEMNODE"/>
+      </Group>
+    </Groups>
+
+    <Buttons>
+      <Button guid="guidXmlToResxCommandPackageCmdSet" id="XmlToResxCommandId" priority="0x0100" type="Button">
+        <Parent guid="guidXmlToResxCommandPackageCmdSet" id="MyMenuGroup" />
+        <Icon guid="guidImages" id="bmpPic1" />
+        <Strings>
+          <ButtonText>Create .resx files...</ButtonText>
+        </Strings>
+      </Button>
+    </Buttons>
+
+    <Bitmaps>
+      <Bitmap guid="guidImages" href="Resources\XmlToResxCommand.png" usedList="bmpPic1"/>
+    </Bitmaps>
+  </Commands>
+
+  <Symbols>
+    <GuidSymbol name="guidXmlToResxCommandPackage" value="{6ed8ac13-e10b-4c14-b49a-04c0b44bb4ac}" />
+
+    <GuidSymbol name="guidXmlToResxCommandPackageCmdSet" value="{ed559473-4866-4d49-8b5f-ce06c501dad0}">
+      <IDSymbol name="MyMenuGroup" value="0x1020" />
+      <IDSymbol name="XmlToResxCommandId" value="0x0100" />
+    </GuidSymbol>
+
+    <GuidSymbol name="guidImages" value="{218e343d-a15e-421a-8d67-f6a6d0e0e096}" >
+      <IDSymbol name="bmpPic1" value="1" />
+
+    </GuidSymbol>
+  </Symbols>
+</CommandTable>
