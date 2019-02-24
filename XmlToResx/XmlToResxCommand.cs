@@ -7,6 +7,7 @@ using System.Linq;
 using System.Resources;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Xml.Linq;
 using EnvDTE;
 using EnvDTE80;
@@ -35,6 +36,7 @@ namespace XmlToResx
         /// VS Package that provides this command, not null.
         /// </summary>
         private readonly AsyncPackage package;
+        private readonly OleMenuCommandService commandService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="XmlToResxCommand"/> class.
@@ -44,12 +46,17 @@ namespace XmlToResx
         /// <param name="commandService">Command service to add command to, not null.</param>
         private XmlToResxCommand(AsyncPackage package, OleMenuCommandService commandService)
         {
-            this.package = package ?? throw new ArgumentNullException(nameof(package));
-            commandService = commandService ?? throw new ArgumentNullException(nameof(commandService));
+
+            if ((package == null) || (commandService == null))
+            {
+                throw new ArgumentNullException("package or commandService");
+            }
+            this.package = package;
+            this.commandService = commandService;
 
             var menuCommandID = new CommandID(CommandSet, CommandId);
             var menuItem = new MenuCommand(this.Execute, menuCommandID);
-            commandService.AddCommand(menuItem);
+            this.commandService.AddCommand(menuItem);
         }
 
         /// <summary>
@@ -102,9 +109,16 @@ namespace XmlToResx
         private async void MenuItemCallbackAsync()
         {
             var dte = (DTE2)await ServiceProvider.GetServiceAsync(typeof(DTE));
-
-            if (CanCreateResx(dte, out string xmlfile))
+            string xmlfile; 
+            if (CanCreateResx(dte, out xmlfile))
             {
+                if (MessageBox.Show(
+                    @"This will add some .resx files into project's properties
+Files that already exist will be overriden
+Do you wish to continue ", "Confirm", MessageBoxButtons.YesNo) == DialogResult.No)
+                {
+                    return;
+                }
                 var destPath = $@"{Path.GetDirectoryName(xmlfile)}\Properties";
 
                 GenerateResxFile(xmlfile, destPath, null);
