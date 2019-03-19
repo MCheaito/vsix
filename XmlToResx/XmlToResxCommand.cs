@@ -7,6 +7,7 @@ using System.Linq;
 using System.Resources;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Xml.Linq;
 using EnvDTE;
 using EnvDTE80;
@@ -45,7 +46,8 @@ namespace XmlToResx
         /// <param name="commandService">Command service to add command to, not null.</param>
         private XmlToResxCommand(AsyncPackage package, OleMenuCommandService commandService)
         {
-            if ( (package == null)|| (commandService== null))
+
+            if ((package == null) || (commandService == null))
             {
                 throw new ArgumentNullException("package or commandService");
             }
@@ -54,7 +56,7 @@ namespace XmlToResx
 
             var menuCommandID = new CommandID(CommandSet, CommandId);
             var menuItem = new MenuCommand(this.Execute, menuCommandID);
-            commandService.AddCommand(menuItem);
+            this.commandService.AddCommand(menuItem);
         }
 
         /// <summary>
@@ -107,9 +109,16 @@ namespace XmlToResx
         private async Task MenuItemCallbackAsync()
         {
             var dte = (DTE2)await ServiceProvider.GetServiceAsync(typeof(DTE));
-            string xmlfile;
-            if (CanCreateResx(dte, out  xmlfile))
+            string xmlfile; 
+            if (CanCreateResx(dte, out xmlfile))
             {
+                if (MessageBox.Show(
+                    @"This will add some .resx files into project's properties
+Files that already exist will be overriden
+Do you wish to continue ", "Confirm", MessageBoxButtons.YesNo) == DialogResult.No)
+                {
+                    return;
+                }
                 var destPath = $@"{Path.GetDirectoryName(xmlfile)}\Properties";
 
                 GenerateResxFile(xmlfile, destPath, null);
